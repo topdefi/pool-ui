@@ -1,1 +1,1 @@
-# pool-ui
+# Miningcore UI

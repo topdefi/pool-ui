@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>BTC Pool</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <link rel="stylesheet" href="css/uikit.min.css" />
+      <link rel="stylesheet" href="css/main.css" />
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      <script src="js/uikit.min.js"></script>
+      <script src="js/uikit-icons.min.js"></script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js"></script>
+   </head>
+   <body uk-height-viewport>
+      <div uk-grid>
+         <div class="uk-width-expand top">
+            <div class="uk-container">
+               <div class="uk-navbar-container uk-navbar-transparent" uk-navbar>
+                  <div class="uk-navbar-left">
+                     <ul class="uk-navbar-nav">
+                        <li>
+                           <a href="index.html">
+                              <h4 style="color:#19D63F">BTC Pool</h4>
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+                  <div class="uk-navbar-right uk-visible@m">
+                     <ul class="uk-navbar-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="miners.html">Miners</a></li>
+                        <li><a href="blocks.html">Blocks</a></li>
+                        <li><a href="payments.html">Payments</a></li>
+                        <li><a href="connect.html">Connect</a></li>
+                     </ul>
+                  </div>
+                  <div class="uk-navbar-right uk-hidden@m">
+                     <a class="uk-navbar-toggle" uk-navbar-toggle-icon href="#" uk-toggle="target: #offcanvas-overlay"></a>
+                  </div>
+                  <div id="offcanvas-overlay" uk-offcanvas="overlay: true">
+                     <div class="uk-offcanvas-bar">
+                        <button class="uk-offcanvas-close" type="button" uk-close></button>
+                        <a href="index.html">
+                           <img class="uk-logo" src="img/logo.png" />
+                           <ul class="uk-nav uk-nav-primary">
+                              <li>
+                        <a href="index.html">Home</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="miners.html">Miners</a></li>
+                        <li><a href="blocks.html">Blocks</a></li>
+                        <li><a href="payments.html">Payments</a></li>
+                        <li><a href="connect.html">Connect</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!--<div class="uk-overflow-auto">-->
+      <div class="uk-container uk-margin-large-top">
+        <div class="uk-card uk-card-body uk-card-default">
+            
+            <div class="row" id="minimumPaymentSetting"> 
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                        <div class="card-title">
+                            <span class="stamp stamp-md bg-info-gradient mr-3">
+                            <i class="fas fa-credit-card"></i></span>Change Payment Threshold</div>
+                        </div>
+                        <div class="card-body">
+                            
+                          <form class="form-horizontal">
+                              <div class="form-group row">
+                              Loaded wallet address from Dashboard
+                            <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-wallet text-icons-y"></i></span>
+                            </div>               															
+                            <input class="form-control" type="text" id="walletAddress" placeholder="Your wallet address" required>
+                            </div>
+                            Enter your miners last used ip-address
+                            <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-globe text-icons-y"></i></span>
+                            </div>
+                            <input class="form-control" type="text" id="ipAddress" placeholder="0.0.0.0" required>
+                            </div>
+                            New payment threshold
+                            <div class="input-group mb-4">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-coins text-icons-y"></i></span>
+                            </div>               															
+                            <input class="form-control" type="number" min="1" max="99999" step="0.1" id="UserPaymentThreshold" placeholder="1" required>
+                            </div>
+                                <button id="PaymentThreshold" onClick="setPaymentThreshold(this.id);return false" type="submit" class="btn btn-info btn-fill">Save</button>
+                            <div class="clearfix">
+                                <p class="text-small">
+                                    <br>Balances that are above payment threshold will be processed every 1 hour.<br><br>
+                                    <b>Increasing</b> the threshold will result in fewer payouts leading to less transactions fee's.<br> <b>Decreasing</b> the threshold will result in more payments but also more transaction fee's.<br><br>
+                                    <i>Range: 1 - 99999</i><br><br>
+                                </p>
+                            </div>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+      </div>
+      <br>
+      <div class="uk-position-bottom uk-position-fixed footer">
+         <div class="uk-container uk-text-center">
+            <p><a href="index.html" target="_blank" style="color:#19D63F">BTC Pool</a></p><br>
+         </div>
+      </div>
+   </body>
+   <script src="js/miningcore-ui.js"></script>
+   <script type="text/javascript">
+      $(document).ready(function () {
+          var renderCallback = $.Callbacks();
+          renderCallback.add(function () {
+              loadBlocksList(100);
+          });
+          loadPools(renderCallback);
+      });
+   </script>
+</html>
